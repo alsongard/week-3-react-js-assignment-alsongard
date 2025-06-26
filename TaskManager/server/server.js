@@ -137,9 +137,6 @@ mongoose.connect(`mongodb+srv://alsongadizo:${secret}@cluster0.iqbumv5.mongodb.n
         console.log(`Error : ${err.message}`)
     })
 
-/*
-mongodb+srv://alsongadizo:tOHW0HfOw4y06Nb6@cluster0.iqbumv5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-*/
 
 /**
 mongodb+srv://alsongadizo:<db_password>@cluster0.iqbumv5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
