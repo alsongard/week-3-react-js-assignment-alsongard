@@ -125,7 +125,8 @@ app.post("/task", async (req, res)=>{
 })
 const portNumber = 5001;
 const secret = process.env.TASK_SECRET;
-mongoose.connect(`mongodb+srv://alsongadizo:${secret}@cluster0.iqbumv5.mongodb.net/tasks?retryWrites=true&w=majority&appName=Cluster0`)
+const user = process.env.TASK_USER;
+mongoose.connect(`mongodb+srv://${user}:${secret}@cluster0.iqbumv5.mongodb.net/tasks?retryWrites=true&w=majority&appName=Cluster0`)
 .then(()=>{
     console.log("Connected To Database")
         app.listen(portNumber, ()=>{
@@ -138,6 +139,3 @@ mongoose.connect(`mongodb+srv://alsongadizo:${secret}@cluster0.iqbumv5.mongodb.n
     })
 
 
-/**
-mongodb+srv://alsongadizo:<db_password>@cluster0.iqbumv5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
- */
