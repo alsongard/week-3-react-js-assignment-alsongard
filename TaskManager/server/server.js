@@ -1,0 +1,146 @@
+const express = require("express");
+const app = express();
+const Task = require("./models/tasks.model.js");
+require("dotenv").config()
+const mongoose = require("mongoose");
+
+
+app.use(express.json());
+app.use(express.urlencoded({extend:false}));
+// require("")
+ 
+
+// get all tasks === working successfully
+app.get("/tasks", async (req, res)=>{
+    try
+    {
+        const allTasks = await Task.find();
+        console.log(allTasks);// works
+        return res.status(200).json(allTasks);
+    }
+    catch(err)
+    {
+        console.log(`error ${err.message}`);
+        return res.status(401).json({success: false, msg: `Error : ${err.message}`});
+    }
+})
+
+// get task based on Id == working successfully
+app.get("/task/:id", async (req, res)=>{
+    const {id} = req.params;
+
+    console.log(`This is id ${id}`);
+    try
+    {
+        //filter data
+        const foundTask = await Task.findById(id);
+        if (foundTask)
+        {
+            console.log(foundTask);
+            return res.status(200).json(foundTask);
+        }
+        else
+        {
+            return res.status(301).json({success: false, msg: `No product found with the id : ${id}`});
+        }
+    }
+    catch(err)
+    {
+        console.log(`Error : ${err}`);
+        return res.json({success: false, msg: `Error : ${err}`});
+    }
+});
+
+
+// update modify task
+app.put("/task/:id", async (req, res)=>{
+    const {id} = req.params;
+    console.log(req.body)
+    try
+    {
+        const taskUpdated = await Task.findByIdAndUpdate(id, req.body);
+        if (taskUpdated)
+        {
+            // console.log(taskUpdated);
+            const updatedTask =  await Task.findById(id)
+            return res.status(200).json(updatedTask);
+        }
+        else
+        {
+            console.log(taskUpdated);
+            return res.status(404).json({success: false, msg: `Task with id ${id} not updated`})
+        }
+    }
+    catch(err)
+    {
+        console.log(`Error : ${err.message}`);
+        return res.status(401).json({success: false, msg: `Error : ${err.message}`})
+    }
+})
+
+
+
+// delete Task == working successfully
+app.delete("/task/:id", async (req, res)=>{
+    const {id} = req.params;
+
+    try
+    {
+        const foundProduct = await Task.findByIdAndDelete(id);
+        
+        if (foundProduct)
+        {
+            console.log(foundProduct);
+            return res.status(200).json({msg: `Product with id : ${id} has been successful deleted`});
+        }
+        else
+        {
+            return res.status(404).json({success:false, msg:`No product with the id : ${id} found`})
+        }
+    }
+    catch(err)
+    {
+        console.log(`Error: ${err.message}`)
+        return res.status(401).json({success: false, msg: `Error: ${err.message}`})
+    }
+});
+
+
+
+
+// add tasks == working
+app.post("/task", async (req, res)=>{
+    console.log(req.body);
+    try
+    {
+
+        const taskCreatedData = await Task.create(req.body);
+        console.log(taskCreatedData);
+        return res.status(200).json(taskCreatedData)
+    }
+    catch(err)
+    {
+        console.log(`Error : ${err.message}`);
+    }
+})
+const portNumber = 5001;
+const secret = process.env.TASK_SECRET;
+mongoose.connect(`mongodb+srv://alsongadizo:${secret}@cluster0.iqbumv5.mongodb.net/tasks?retryWrites=true&w=majority&appName=Cluster0`)
+.then(()=>{
+    console.log("Connected To Database")
+        app.listen(portNumber, ()=>{
+            console.log(`Server is listening on port ${portNumber}`);
+        })
+    })
+    .catch((err)=>{
+        console.log("Failed to connect");
+        console.log(`Error : ${err.message}`)
+    })
+
+/*
+mongodb+srv://alsongadizo:tOHW0HfOw4y06Nb6@cluster0.iqbumv5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+*/
+
+/**
+mongodb+srv://alsongadizo:<db_password>@cluster0.iqbumv5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+ */
