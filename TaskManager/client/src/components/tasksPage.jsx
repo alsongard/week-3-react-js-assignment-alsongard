@@ -218,9 +218,34 @@ function TaskManager()
         console.log("Running handleCreateTask")
         createTask()
     }
-    function deleteTask()
-    {
 
+    // DELETE TASK FUNCTION
+    const [displayDeleteForm, setDisplayDeleteForm] = useState(false);
+    const [deleteMsg, setDeleteMsg] = useState()
+    function deleteTaskBtn()
+    {
+        setDisplayDeleteForm(true);
+    }
+
+    async function deleteTask()
+    {
+        try
+        {
+            const res = await axios.delete(`http://localhost:5001/task/${singleTaskFormData.taskId}`);
+            console.log(res);
+            const {msg}= res.data;
+            setDeleteMsg(msg);
+        }
+        catch(err)
+        {
+            console.log(`Error: ${err}`);
+        }
+
+    }
+    function handleDeleteTask(event)
+    {
+        event.preventDefault();
+        deleteTask();
     }
     let content;
     if (taskData.length >= 1)
@@ -247,6 +272,7 @@ function TaskManager()
         setDisplayUpdateForm(false);
         setUpdateFormItem({taskDetail: ""})
         setDisplayUpdateForm(false);
+        setDisplayNewTaskForm(false);
         setTaskData({});
     }
     return (
@@ -278,7 +304,7 @@ function TaskManager()
                     <button onClick={getAllTask} className="py-[5px] px-[10px] rounded-md bg-[rgb(93,109,126)] ">View All Tasks</button>
                     <button onClick={displaySingleForm} className="py-[5px] px-[10px] rounded-md bg-[rgb(93,109,126)]">View Single Task</button>
                     <button onClick={getUpdate} className="py-[5px] px-[10px] rounded-md bg-[rgb(93,109,126)]">Update Task</button>
-                    <button onClick={deleteTask} className="py-[5px] px-[10px] rounded-md bg-[rgb(93,109,126)]">Delete Task</button>
+                    <button onClick={deleteTaskBtn} className="py-[5px] px-[10px] rounded-md bg-[rgb(93,109,126)]">Delete Task</button>
                     <button onClick={getTaskBtn} className="py-[5px] px-[10px] rounded-md bg-[rgb(93,109,126)]">Add Tasks</button>
                 </div>
                 
@@ -401,6 +427,20 @@ function TaskManager()
                     )
                 }
 
+
+                {/* DELETE FORM */}
+                {
+                    displayDeleteForm && (
+                        <div>
+                            <form onSubmit={handleDeleteTask} className="shadow-[0px_0px_5px_gray] py-[20px] px-[10px] mt-[50px] rounded-md">
+                                <label htmlFor="taskId">Enter TaskID: </label>
+                                <input onChange={handleSingleChange} className="block border-[1.2px] py-[2px] px-[10px] rounded-md border-black text-black w-full" name="taskId" value={singleTaskFormData.taskId} type="text" placeholder="task id..."/>
+                                <input  className="bg-[rgb(46,204,113)] mt-[10px] px-[5px] w-[100px] py-[2.5px] rounded-[5px]" type="submit" value="submit"/>
+                            </form>
+                            <p>{deleteMsg}</p>
+                        </div>
+                    )
+                }
                 {/* diplaying all tasks */}
                 <div className="flex flex-col gap-y-[20px] mt-[50px]">
                     {
