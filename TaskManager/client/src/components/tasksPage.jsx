@@ -28,7 +28,7 @@ function TaskManager()
     async function getAllTask() // working === successfully
     {
         console.log("Getting all Tasks");
-        await axios.get('http://localhost:5001/tasks')
+        await axios.get('https://week-3-react-js-assignment-alsongar.vercel.app/tasks')
             .then((res)=>{
                 console.log(res)
                 if (res.data)
@@ -74,7 +74,8 @@ function TaskManager()
         console.log("getting single tasks");
         try
         {
-            const res = await axios.get(`http://localhost:5001/task/${singleTaskFormData.taskId}`);
+            
+            const res = await axios.get(`https://week-3-react-js-assignment-alsongar.vercel.app/task/${singleTaskFormData.taskId}`);
             console.log(res);
             const data = await res.data;
             setTaskData([data]);
@@ -108,7 +109,7 @@ function TaskManager()
 
     // UPDATE FUNCTIONALITY SETUP
 
-    const [displayUpdateForm,setDisplayUpdateForm] = useState(false);
+    const [displayUpdateForm, setDisplayUpdateForm] = useState(false);
     const [updateFormItem, setUpdateFormItem] = useState({
         taskDetail: ""
     });
@@ -150,7 +151,9 @@ function TaskManager()
     {
         try
         {
-            const res = await axios.put("http://localhost:5001/task/685cfb3543ad3a0166eb1480", taskUpdateData);
+            const res = await axios.put(`https://week-3-react-js-assignment-alsongar.vercel.app/task/${singleTaskFormData.taskId}`, taskUpdateData);
+            // const res = await axios.put("http://localhost:5001/task/685cfb3543ad3a0166eb1480", taskUpdateData);
+            
             const data = await res.data;
             setTaskData([data]);
             // console.log("This is updateTask");
@@ -201,7 +204,8 @@ function TaskManager()
     {
         try
         {
-            const res = await axios.post("http://localhost:5001/task", newTaskData);
+            // const res = await axios.post("http://localhost:5001/task", newTaskData);
+            const res = await axios.post("https://week-3-react-js-assignment-alsongar.vercel.app/task", newTaskData);
             // console.log(res);
             const {data} = res;
             setTaskData([data]);
@@ -231,7 +235,7 @@ function TaskManager()
     {
         try
         {
-            const res = await axios.delete(`http://localhost:5001/task/${singleTaskFormData.taskId}`);
+            const res = await axios.delete(`https://week-3-react-js-assignment-alsongar.vercel.app/task/${singleTaskFormData.taskId}`);
             console.log(res);
             const {msg}= res.data;
             setDeleteMsg(msg);
