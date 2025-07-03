@@ -254,7 +254,7 @@ function TaskManager()
             console.log(`the following are taskItem`);
             console.log(taskItem)
             return (
-                <div className="shadow-[0px_0px_5px_blue] bg-gradient-to-r from-slate-200 to-slate-400 p-[20px] rounded-md" id={taskItem._id}>
+                <div className="shadow-[0px_0px_5px_blue] bg-gradient-to-r from-slate-200 dark:from-slate-700 dark:to-slate-700 to-slate-400 p-[20px] rounded-md" id={taskItem._id}>
                     <p className="text-[18px]"><span className="font-bold">task Name :</span> {taskItem.task_name}</p>
                     <p className="text-[18px]"><span className="font-bold">task Description:</span> {taskItem.task_description}</p>
                     <p className="text-[18px]"><span className="font-bold">task Priority:</span> {taskItem.priority}</p>
