@@ -6,7 +6,7 @@ require("dotenv").config()
 const path = require("node:path");
 const mongoose = require("mongoose");
 app.use(express.json());
-app.use(express.urlencoded({extend:false}));
+app.use(express.urlencoded({extended:false}));
 
 
 const corsOptions = {
@@ -29,7 +29,7 @@ app.get("/", (req, res)=>{
 })
 // get all tasks === working successfully
 // app.get("/tasks", async (req, res)=>{
-app.get("https://week-3-react-js-assignment-alsongar.vercel.app/tasks", async (req, res)=>{
+app.get("/tasks", async (req, res)=>{
     try
     {
         const allTasks = await Task.find();
@@ -45,7 +45,7 @@ app.get("https://week-3-react-js-assignment-alsongar.vercel.app/tasks", async (r
 //https://week-3-react-js-assignment-alsongar.vercel.app/
 // get task based on Id == working successfully
 // app.get("/task/:id", async (req, res)=>{
-app.get("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async (req, res)=>{
+app.get("/task/:id", async (req, res)=>{
     const {id} = req.params;
 
     console.log(`This is id ${id}`);
@@ -73,7 +73,7 @@ app.get("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async
 
 // update modify task
 // app.put("/task/:id", async (req, res)=>{
-app.put("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async (req, res)=>{
+app.put("/task/:id", async (req, res)=>{
     const {id} = req.params;
     console.log(req.body)
     try
@@ -101,7 +101,7 @@ app.put("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async
 
 
 // delete Task == working successfully
-app.delete("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async (req, res)=>{
+app.delete("/task/:id", async (req, res)=>{
     const {id} = req.params;
 
     try
@@ -129,6 +129,7 @@ app.delete("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", as
 
 
 // add tasks == working
+// app.post("/task", async (req, res)=>{
 app.post("/task", async (req, res)=>{
     console.log(req.body);
     try
@@ -157,7 +158,7 @@ const connectMongoDB = async ()=>{
 
         await mongoose.connect(`mongodb+srv://${user}:${secret}@cluster0.iqbumv5.mongodb.net/tasks?retryWrites=true&w=majority&appName=Cluster0`)
         console.log("Connected To Database");
-        if (process.env.VERCEL != "1")
+        if (!process.env.VERCEL)
         {
             app.listen(portNumber, ()=>{
                 console.log(`Server is listening on port ${portNumber}`);
@@ -172,4 +173,6 @@ const connectMongoDB = async ()=>{
     }
 
 }
+connectMongoDB();
+
 module.exports = app;
