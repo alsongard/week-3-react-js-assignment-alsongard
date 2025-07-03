@@ -3,22 +3,29 @@ const app = express();
 const Task = require("./models/tasks.model.js");
 const cors = require('cors');
 require("dotenv").config()
+const path = require("node:path");
 const mongoose = require("mongoose");
-
-
 app.use(express.json());
 app.use(express.urlencoded({extend:false}));
-app.use(cors(
-    {
-        origin: "https://week-3-react-js-assignment-alsongar.vercel.app",
-        methods: ["POST", "GET", "PUT", "DELETE"],
-        credentials: true
-    }
-))
-// require("")
+
+
+const corsOptions = {
+    origin: process.env.NODE_ENV === 'production' 
+    ? "https://week-3-react-js-assignment-alsongar.vercel.app"
+    : "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}
+app.use(cors(corsOptions));
+
+// error handling middleware
+app.use((err, req, res, next)=>{
+    console.log(`Server error: ${err.stack}`);
+    res.send("<h1>Server Error </h1>");
+})
  
 app.get("/", (req, res)=>{
-    return res.send("<h1>Hello </h1>")
+    return res.send("<h1>Hello I am task API</h1>")
 })
 // get all tasks === working successfully
 // app.get("/tasks", async (req, res)=>{
@@ -135,20 +142,34 @@ app.post("/task", async (req, res)=>{
     {
         console.log(`Error : ${err.message}`);
     }
-})
+});
+
+
+
 const portNumber = 5001;
 const secret = process.env.TASK_SECRET;
 const user = process.env.TASK_USER;
-mongoose.connect(`mongodb+srv://${user}:${secret}@cluster0.iqbumv5.mongodb.net/tasks?retryWrites=true&w=majority&appName=Cluster0`)
-.then(()=>{
-    console.log("Connected To Database")
-        app.listen(portNumber, ()=>{
-            console.log(`Server is listening on port ${portNumber}`);
-        })
-    })
-    .catch((err)=>{
+
+const connectMongoDB = async ()=>{
+
+    try
+    {
+
+        await mongoose.connect(`mongodb+srv://${user}:${secret}@cluster0.iqbumv5.mongodb.net/tasks?retryWrites=true&w=majority&appName=Cluster0`)
+        console.log("Connected To Database");
+        if (process.env.VERCEL != "1")
+        {
+            app.listen(portNumber, ()=>{
+                console.log(`Server is listening on port ${portNumber}`);
+            })
+        }
+    }
+    catch(err)
+    {
         console.log("Failed to connect");
-        console.log(`Error : ${err.message}`)
-    })
+        console.log(`Error : ${err.message}`);
+        process.exit(1);
+    }
 
-
+}
+module.exports = app;
