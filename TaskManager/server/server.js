@@ -1,17 +1,28 @@
 const express = require("express");
 const app = express();
 const Task = require("./models/tasks.model.js");
+const cors = require('cors');
 require("dotenv").config()
 const mongoose = require("mongoose");
 
 
 app.use(express.json());
 app.use(express.urlencoded({extend:false}));
+app.use(cors(
+    {
+        origin: "https://week-3-react-js-assignment-alsongar.vercel.app",
+        methods: ["POST", "GET", "PUT", "DELETE"],
+        credentials: true
+    }
+))
 // require("")
  
-
+app.get("/", (req, res)=>{
+    return res.send("<h1>Hello </h1>")
+})
 // get all tasks === working successfully
-app.get("/tasks", async (req, res)=>{
+// app.get("/tasks", async (req, res)=>{
+app.get("https://week-3-react-js-assignment-alsongar.vercel.app/tasks", async (req, res)=>{
     try
     {
         const allTasks = await Task.find();
@@ -24,9 +35,10 @@ app.get("/tasks", async (req, res)=>{
         return res.status(401).json({success: false, msg: `Error : ${err.message}`});
     }
 })
-
+//https://week-3-react-js-assignment-alsongar.vercel.app/
 // get task based on Id == working successfully
-app.get("/task/:id", async (req, res)=>{
+// app.get("/task/:id", async (req, res)=>{
+app.get("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async (req, res)=>{
     const {id} = req.params;
 
     console.log(`This is id ${id}`);
@@ -53,7 +65,8 @@ app.get("/task/:id", async (req, res)=>{
 
 
 // update modify task
-app.put("/task/:id", async (req, res)=>{
+// app.put("/task/:id", async (req, res)=>{
+app.put("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async (req, res)=>{
     const {id} = req.params;
     console.log(req.body)
     try
@@ -81,7 +94,7 @@ app.put("/task/:id", async (req, res)=>{
 
 
 // delete Task == working successfully
-app.delete("/task/:id", async (req, res)=>{
+app.delete("https://week-3-react-js-assignment-alsongar.vercel.app/task/:id", async (req, res)=>{
     const {id} = req.params;
 
     try
