@@ -151,7 +151,11 @@ function TaskManager()
     {
         try
         {
-            const res = await axios.put(`https://week-3-react-js-assignment-alsongar.vercel.app/task/${singleTaskFormData.taskId}`, taskUpdateData);
+            const res = await axios.put(`https://week-3-react-js-assignment-alsongar.vercel.app/task/${singleTaskFormData.taskId}`, taskUpdateData,{
+                headers: {'Content-Type': "application/json"},
+                withCredentials: true
+            }
+            );
             // const res = await axios.put("http://localhost:5001/task/685cfb3543ad3a0166eb1480", taskUpdateData);
             
             const data = await res.data;
@@ -205,10 +209,14 @@ function TaskManager()
         try
         {
             // const res = await axios.post("http://localhost:5001/task", newTaskData);
-            const res = await axios.post("https://week-3-react-js-assignment-alsongar.vercel.app/task", newTaskData);
+            const res = await axios.post("https://week-3-react-js-assignment-alsongar.vercel.app/task", newTaskData, {
+                headers : {"Content-Type": "application/json"},
+                withCredentials: true
+            });
             console.log(res);
             const {data} = res;
             setTaskData([data]);
+
 
         }
         catch(err)
@@ -319,7 +327,7 @@ function TaskManager()
                     displaySingleTaskForm && 
                     (<form onSubmit={handleSingleSubmit} className="shadow-[0px_0px_5px_gray] py-[20px] px-[10px] mt-[50px] rounded-md">
                         <label htmlFor="taskId">Enter TaskID: </label>
-                        <input onChange={handleSingleChange} className="block border-[1.2px] py-[2px] px-[10px] rounded-md border-black w-full" name="taskId" value={singleTaskFormData.taskId} type="text" placeholder="task id..."/>
+                        <input onChange={handleSingleChange} className="block border-[1.2px] py-[2px] px-[10px] rounded-md border-black w-full text-black" name="taskId" value={singleTaskFormData.taskId} type="text" placeholder="task id..."/>
                         <input  className="bg-[rgb(46,204,113)] mt-[10px] px-[5px] w-[100px] py-[2.5px] rounded-[5px]" type="submit" value="submit"/>
                     </form>)
                     //onSubmit getSingleTask will be used to fetch the data on the given id
