@@ -243,7 +243,10 @@ function TaskManager()
     {
         try
         {
-            const res = await axios.delete(`https://week-3-react-js-assignment-alsongar.vercel.app/task/${singleTaskFormData.taskId}`);
+            const res = await axios.delete(`https://week-3-react-js-assignment-alsongar.vercel.app/task/${singleTaskFormData.taskId}`, {
+                headers: {'Content-Type': 'application/json'},
+                withCredentials: true
+            });
             console.log(res);
             const {msg}= res.data;
             setDeleteMsg(msg);
@@ -285,6 +288,7 @@ function TaskManager()
         setUpdateFormItem({taskDetail: ""})
         setDisplayUpdateForm(false);
         setDisplayNewTaskForm(false);
+        setDisplayDeleteForm(false);
         setTaskData({});
     }
     return (
