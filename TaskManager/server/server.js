@@ -65,9 +65,11 @@ app.use((err, req, res, next)=>{
     console.log(`Server error: ${err.stack}`);
     res.send("<h1>Server Error </h1>");
 })
- 
+
+app.use(express.static("public"));
+
 app.get("/", (req, res)=>{
-    return res.send("<h1>Hello I am task API</h1>")
+    return res.sendFile(path.join(__dirname,'public', 'index.html'))
 })
 // get all tasks === working successfully
 // app.get("/tasks", async (req, res)=>{
