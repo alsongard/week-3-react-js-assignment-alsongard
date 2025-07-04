@@ -12,15 +12,14 @@ app.use(express.urlencoded({extended:false}));
 const corsOptions = {
     origin: function (origin, callback)
     {
-        /*if (process.env.NODE_ENV !== "production")
-        {
-            callback(null, true); //cross origin resource sharing function provided by the middleware takes
-            // 2 arguments : 1rst is used to set to deny:domain not allowed while the second:set if domain/url
-            // is allowed
-        }*/
+        // 1. Handle non-production environment FIRST
+        if (process.env.NODE_ENV !== "production") {
+        console.log(`[DEV] Allowing origin: ${origin}`);
+        return callback(null, true); // RETURN after callback
+        }
         const AllowedDomains = [
-            "https://my-tasks-project.vercel.app/",
-            "http://localhost:5173/"
+            "https://my-tasks-project.vercel.app",
+            "http://localhost:5173"
         ]
 
         // to allow request with no origin: that is postman or curl
