@@ -206,7 +206,7 @@ function TaskManager()
         {
             // const res = await axios.post("http://localhost:5001/task", newTaskData);
             const res = await axios.post("https://week-3-react-js-assignment-alsongar.vercel.app/task", newTaskData);
-            // console.log(res);
+            console.log(res);
             const {data} = res;
             setTaskData([data]);
 
