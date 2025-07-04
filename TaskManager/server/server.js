@@ -36,10 +36,24 @@ const corsOptions = {
             callback( new Error(`Origin: ${origin} not allowed by CORS. Check server to allow domain`), false);
         }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
-}
+};
+app.options('/{*any}', cors(corsOptions)); 
 app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  // Manually set headers for all responses
+  res.header("Access-Control-Allow-Origin", 
+    process.env.NODE_ENV === "production" 
+      ? "https://my-tasks-project.vercel.app" 
+      : "*");
+  
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 // app.options("*",cors(corsOptions)); // preflight option request: usefull for security and enables the browser
 // to request the resource from the backend before sending or getting the data(formVerification)
