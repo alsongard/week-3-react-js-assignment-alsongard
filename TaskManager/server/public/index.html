@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alson Task Manager API Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      color: #007BFF;
+    }
+    section {
+      background-color: #fff;
+      border-left: 5px solid #007BFF;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    code {
+      background-color: #eee;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    a {
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <h1>Alson Task Manager API</h1>
+
+  <p>
+    This API allows you to manage tasks by creating, reading, updating, and deleting them.
+    It is a RESTful interface designed for use in web or mobile applications.
+    All data is served and accepted in JSON format.
+  </p>
+
+  <section>
+    <h2>🌐 API Base URL</h2>
+    <p><code>https://alson-task-api.vercel.app/</code></p>
+  </section>
+
+  <section>
+    <h2>📌 Create a Task</h2>
+    <p><strong>Endpoint:</strong> <code>POST /task</code></p>
+    <p><strong>Full URL:</strong> <code>https://alson-task-api.vercel.app/task</code></p>
+    <p>This route allows you to create a new task by sending a JSON object in the request body.</p>
+    <p><strong>Request Body Example:</strong></p>
+    <pre>
+        {
+            task_name: "Complete project",
+            task_description: "Finish the frontend and backend",
+            task_startDate: "",
+            task_endDate: "",
+            status: "upcoming/ongoing",
+            priority: 1-10, 
+            assignee: "Hohn",
+        }
+    </pre>
+    <p><strong>Response:</strong> Returns the newly created task object with an ID.</p>
+  </section>
+
+  <section>
+    <h2>📋 View All Tasks</h2>
+    <p><strong>Endpoint:</strong> <code>GET /tasks</code></p>
+    <p><strong>Full URL:</strong> <code>https://alson-task-api.vercel.app/tasks</code></p>
+    <p>This route fetches all tasks stored in the database. It returns an array of task objects.</p>
+    <p><strong>Use Case:</strong> Display all tasks in a list or dashboard.</p>
+  </section>
+
+  <section>
+    <h2>🔍 View Specific Task</h2>
+    <p><strong>Endpoint:</strong> <code>GET /task/:id</code></p>
+    <p><strong>Full URL Example:</strong> <code>https://alson-task-api.vercel.app/task/64fc8a...</code></p>
+    <p>This route returns a single task based on the provided unique ID in the URL.</p>
+    <p><strong>Parameters:</strong></p>
+    <ul>
+      <li><code>:id</code> – The unique identifier of the task (usually MongoDB ObjectID).</li>
+    </ul>
+    <p><strong>Response:</strong> The task object if found, or an error if the ID is invalid or not found.</p>
+  </section>
+
+  <section>
+    <h2>🗑️ Delete a Task</h2>
+    <p><strong>Endpoint:</strong> <code>DELETE /task/:id</code></p>
+    <p><strong>Full URL Example:</strong> <code>https://alson-task-api.vercel.app/task/64fc8a...</code></p>
+    <p>This route deletes a specific task from the database based on the provided task ID.</p>
+    <p><strong>Response:</strong> A confirmation message or an error if the task does not exist.</p>
+  </section>
+
+  <section>
+    <h2>✏️ Update a Task</h2>
+    <p><strong>Endpoint:</strong> <code>PUT /task/:id</code></p>
+    <p><strong>Full URL Example:</strong> <code>https://alson-task-api.vercel.app/task/64fc8a...</code></p>
+    <p>This route allows you to update an existing task by sending updated fields in the JSON body.</p>
+    <p><strong>Request Body Example:</strong></p>
+    <pre>
+    {
+    "title": "Updated task title",
+    "description": "Updated task description"
+    }
+    </pre>
+    <p><strong>Response:</strong> The updated task object or an error if the task ID is not found.</p>
+    <p style="color:red"><strong>Status:</strong>The update function only updates the task_name of the project. Other task details will be added later...</p>
+</section>
+
+  <footer style="margin-top: 40px; text-align: center; font-size: 0.9em; color: #555;">
+    &copy; 2025 Alson Tech. All rights reserved.
+  </footer>
+</body>
+</html>
