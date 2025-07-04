@@ -41,7 +41,7 @@ const corsOptions = {
     credentials: true
 };
 app.options('/{*any}', cors(corsOptions)); 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 // app.use((req, res, next) => {
 //   // Manually set headers for all responses
