@@ -10,14 +10,14 @@ app.use(express.urlencoded({extended:false}));
 
 
 const corsOptions = {
-    origin: function (callback,origin)
+    origin: function (origin, callback)
     {
-        if (process.env.NODE_ENV !== "production")
+        /*if (process.env.NODE_ENV !== "production")
         {
             callback(null, true); //cross origin resource sharing function provided by the middleware takes
             // 2 arguments : 1rst is used to set to deny:domain not allowed while the second:set if domain/url
             // is allowed
-        }
+        }*/
         const AllowedDomains = [
             "https://my-tasks-project.vercel.app/",
             "http://localhost:5173/"
@@ -26,22 +26,23 @@ const corsOptions = {
         // to allow request with no origin: that is postman or curl
         if (!origin)
         {
-            callback(null, true);
+            return callback(null, true);
         }
         if (AllowedDomains.indexOf(origin) !== -1)
         {
-            callback(null, true);
+            callback(null, true); // alow origin
         }
         else
         {
-            callback(`Error : ${origin} not allowed by CORS. Check server to allow domain`)
+            callback( new Error(`Origin: ${origin} not allowed by CORS. Check server to allow domain`), false);
         }
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }
 app.use(cors(corsOptions));
-app.options("*",cors(corsOptions)); // preflight option request: usefull for security and enables the browser
+
+// app.options("*",cors(corsOptions)); // preflight option request: usefull for security and enables the browser
 // to request the resource from the backend before sending or getting the data(formVerification)
 
 // error handling middleware
@@ -68,7 +69,7 @@ app.get("/tasks", async (req, res)=>{
         return res.status(401).json({success: false, msg: `Error : ${err.message}`});
     }
 })
-//https://week-3-react-js-assignment-alsongar.vercel.app/
+
 // get task based on Id == working successfully
 // app.get("/task/:id", async (req, res)=>{
 app.get("/task/:id", async (req, res)=>{
