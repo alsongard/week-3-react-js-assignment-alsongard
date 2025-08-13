@@ -7,7 +7,7 @@ const path = require("node:path");
 const mongoose = require("mongoose");
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-
+const taskRoutes = require("./routes/tasks.router.js");;
 
 const corsOptions = {
     origin: function (origin, callback)
@@ -66,31 +66,35 @@ app.use((err, req, res, next)=>{
     console.log(`Server error: ${err.stack}`);
     res.send("<h1>Server Error </h1>");
 })
-
 app.use(express.static("public"));
+
+
 
 app.get("/", (req, res)=>{
     return res.sendFile(path.join(__dirname,'public', 'index.html'))
 })
+
+// using routes
+app.use("api/task",taskRoutes)
 // get all tasks === working successfully
 // app.get("/tasks", async (req, res)=>{
-app.get("/tasks", async (req, res)=>{
-    try
-    {
-        const allTasks = await Task.find();
-        console.log(allTasks);// works
-        return res.status(200).json(allTasks);
-    }
-    catch(err)
-    {
-        console.log(`error ${err.message}`);
-        return res.status(401).json({success: false, msg: `Error : ${err.message}`});
-    }
-})
+// app.get("api/tasks", async (req, res)=>{
+//     try
+//     {
+//         const allTasks = await Task.find();
+//         console.log(allTasks);// works
+//         return res.status(200).json(allTasks);
+//     }
+//     catch(err)
+//     {
+//         console.log(`error ${err.message}`);
+//         return res.status(401).json({success: false, msg: `Error : ${err.message}`});
+//     }
+// })
 
 // get task based on Id == working successfully
 // app.get("/task/:id", async (req, res)=>{
-app.get("/task/:id", async (req, res)=>{
+app.get("api/task/:id", async (req, res)=>{
     const {id} = req.params;
 
     console.log(`This is id ${id}`);
@@ -118,7 +122,7 @@ app.get("/task/:id", async (req, res)=>{
 
 // update modify task
 // app.put("/task/:id", async (req, res)=>{
-app.put("/task/:id", async (req, res)=>{
+app.put("api/task/:id", async (req, res)=>{
     const {id} = req.params;
     console.log(req.body)
     try
@@ -146,7 +150,7 @@ app.put("/task/:id", async (req, res)=>{
 
 
 // delete Task == working successfully
-app.delete("/task/:id", async (req, res)=>{
+app.delete("api/task/:id", async (req, res)=>{
     const {id} = req.params;
 
     try
@@ -175,7 +179,7 @@ app.delete("/task/:id", async (req, res)=>{
 
 // add tasks == working
 // app.post("/task", async (req, res)=>{
-app.post("/task", async (req, res)=>{
+app.post("api/task", async (req, res)=>{
     console.log(req.body);
     try
     {
