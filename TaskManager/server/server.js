@@ -40,7 +40,7 @@ const corsOptions = {
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 };
-app.options('/{*any}', cors(corsOptions)); 
+// app.options('/{*any}', cors(corsOptions)); 
 
 app.use(cors(corsOptions));
 
