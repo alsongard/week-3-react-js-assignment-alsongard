@@ -75,7 +75,7 @@ app.get("/", (req, res)=>{
 })
 
 // using routes
-app.use("api/task",taskRoutes)
+app.use("api/task/",taskRoutes)
 // get all tasks === working successfully
 // app.get("/tasks", async (req, res)=>{
 // app.get("api/tasks", async (req, res)=>{
