@@ -4,8 +4,10 @@ const cors = require('cors');
 require("dotenv").config()
 const path = require("node:path");
 const mongoose = require("mongoose");
+
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
+
 const taskRoutes = require("./routes/tasks.router.js");;
 
 const corsOptions = {
