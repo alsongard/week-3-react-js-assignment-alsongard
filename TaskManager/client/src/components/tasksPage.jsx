@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 
 import axios from "axios";
 
-const taskAPi = "https://alson-task-api.vercel.app"
+
 function TaskManager()
 {
+
+    const taskAPI =  import.meta.env.VITE_TASK_API_URL;
+    console.log(`This is apiTaskUrl: ${taskAPI}`); // working:successfully
     // AllTaskState
     const [taskData, setTaskData] = useState([]);
     const [displayAllTask, setDisplayAllTask] = useState(false);
@@ -30,7 +33,7 @@ function TaskManager()
     async function getAllTask() // working === successfully
     {
         console.log("Getting all Tasks");
-        await axios.get(`${taskAPi}/tasks`)
+        await axios.get(`${taskAPI}/api/task`)
             .then((res)=>{
                 console.log(res)
                 if (res.data)
@@ -77,7 +80,7 @@ function TaskManager()
         try
         {
             
-            const res = await axios.get(`${taskAPi}/task/${singleTaskFormData.taskId}`);
+            const res = await axios.get(`${taskAPI}/api/task/${singleTaskFormData.taskId}`);
             console.log(res);
             const data = await res.data;
             setTaskData([data]);
@@ -153,7 +156,7 @@ function TaskManager()
     {
         try
         {
-            const res = await axios.put(`${taskAPi}/task/${singleTaskFormData.taskId}`, taskUpdateData,{
+            const res = await axios.put(`${taskAPI}/api/task/${singleTaskFormData.taskId}`, taskUpdateData,{
                 headers: {'Content-Type': "application/json"},
                 withCredentials: true
             }
@@ -211,7 +214,7 @@ function TaskManager()
         try
         {
             // const res = await axios.post("http://localhost:5001/task", newTaskData);
-            const res = await axios.post(`${taskAPi}/task`, newTaskData, {
+            const res = await axios.post(`${taskAPI}/api/task`, newTaskData, {
                 headers : {"Content-Type": "application/json"},
                 withCredentials: true
             });
@@ -245,7 +248,7 @@ function TaskManager()
     {
         try
         {
-            const res = await axios.delete(`${taskAPi}/task/${singleTaskFormData.taskId}`, {
+            const res = await axios.delete(`${taskAPI}/api/task/${singleTaskFormData.taskId}`, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });
