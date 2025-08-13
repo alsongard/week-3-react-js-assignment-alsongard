@@ -1,23 +1,24 @@
 const express = require('express');
-const Task = require("../models/tasks.model");
 const router = express.Router();
+const {getAllTasks, getTaskOnId, updateTaskOnId, deleteTaskOnId, addTask} = require("../controllers/task.controllers")
+
 
 // get all tasks
-router.get("/", async (req, res)=>{
-    try
-    {
-        const allTasks = await Task.find();
-        console.log(allTasks);// works
-        return res.status(200).json(allTasks);
-    }
-    catch(err)
-    {
-        console.log(`error ${err.message}`);
-        return res.status(401).json({success: false, msg: `Error : ${err.message}`});
-    }
-})
+router.get("/", getAllTasks)
 
-// router.get(/)
+// get task based on Id
+router.get("/:id", getTaskOnId);
+
+
+// updateTaskBased on Id
+router.put("/:id", updateTaskOnId);
+
+// delete task based on Id
+router.delete("/:id", deleteTaskOnId);
+
+
+// add task based on Id
+router.post("/", addTask)
 
 module.exports = router;
 
