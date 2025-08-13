@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const Task = require("./models/tasks.model.js");
 const cors = require('cors');
 require("dotenv").config()
 const path = require("node:path");
@@ -41,25 +40,15 @@ const corsOptions = {
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 };
-// app.options('/{*any}', cors(corsOptions)); 
+// app.options('/{*any}', cors(corsOptions));   handles by app.use(cors()) middleware
 
 app.use(cors(corsOptions));
 
-// app.use((req, res, next) => {
-//   // Manually set headers for all responses
-//   res.header("Access-Control-Allow-Origin", 
-//     process.env.NODE_ENV === "production" 
-//       ? "https://my-tasks-project.vercel.app" 
-//       : "*");
-  
-//   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-//   res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
-//   res.header("Access-Control-Allow-Credentials", "true");
-//   next();
-// });
+
 
 // app.options("*",cors(corsOptions)); // preflight option request: usefull for security and enables the browser
 // to request the resource from the backend before sending or getting the data(formVerification)
+
 
 // error handling middleware
 app.use((err, req, res, next)=>{
@@ -75,124 +64,7 @@ app.get("/", (req, res)=>{
 })
 
 // using routes
-app.use("api/task/",taskRoutes)
-// get all tasks === working successfully
-// app.get("/tasks", async (req, res)=>{
-// app.get("api/tasks", async (req, res)=>{
-//     try
-//     {
-//         const allTasks = await Task.find();
-//         console.log(allTasks);// works
-//         return res.status(200).json(allTasks);
-//     }
-//     catch(err)
-//     {
-//         console.log(`error ${err.message}`);
-//         return res.status(401).json({success: false, msg: `Error : ${err.message}`});
-//     }
-// })
-
-// get task based on Id == working successfully
-// app.get("/task/:id", async (req, res)=>{
-app.get("api/task/:id", async (req, res)=>{
-    const {id} = req.params;
-
-    console.log(`This is id ${id}`);
-    try
-    {
-        //filter data
-        const foundTask = await Task.findById(id);
-        if (foundTask)
-        {
-            console.log(foundTask);
-            return res.status(200).json(foundTask);
-        }
-        else
-        {
-            return res.status(301).json({success: false, msg: `No product found with the id : ${id}`});
-        }
-    }
-    catch(err)
-    {
-        console.log(`Error : ${err}`);
-        return res.json({success: false, msg: `Error : ${err}`});
-    }
-});
-
-
-// update modify task
-// app.put("/task/:id", async (req, res)=>{
-app.put("api/task/:id", async (req, res)=>{
-    const {id} = req.params;
-    console.log(req.body)
-    try
-    {
-        const taskUpdated = await Task.findByIdAndUpdate(id, req.body);
-        if (taskUpdated)
-        {
-            // console.log(taskUpdated);
-            const updatedTask =  await Task.findById(id)
-            return res.status(200).json(updatedTask);
-        }
-        else
-        {
-            console.log(taskUpdated);
-            return res.status(404).json({success: false, msg: `Task with id ${id} not updated`})
-        }
-    }
-    catch(err)
-    {
-        console.log(`Error : ${err.message}`);
-        return res.status(401).json({success: false, msg: `Error : ${err.message}`})
-    }
-})
-
-
-
-// delete Task == working successfully
-app.delete("api/task/:id", async (req, res)=>{
-    const {id} = req.params;
-
-    try
-    {
-        const foundProduct = await Task.findByIdAndDelete(id);
-        
-        if (foundProduct)
-        {
-            console.log(foundProduct);
-            return res.status(200).json({msg: `Product with id : ${id} has been successful deleted`});
-        }
-        else
-        {
-            return res.status(404).json({success:false, msg:`No product with the id : ${id} found`})
-        }
-    }
-    catch(err)
-    {
-        console.log(`Error: ${err.message}`)
-        return res.status(401).json({success: false, msg: `Error: ${err.message}`})
-    }
-});
-
-
-
-
-// add tasks == working
-// app.post("/task", async (req, res)=>{
-app.post("api/task", async (req, res)=>{
-    console.log(req.body);
-    try
-    {
-
-        const taskCreatedData = await Task.create(req.body);
-        console.log(taskCreatedData);
-        return res.status(200).json(taskCreatedData)
-    }
-    catch(err)
-    {
-        console.log(`Error : ${err.message}`);
-    }
-});
+app.use("/api/task",taskRoutes)
 
 
 
